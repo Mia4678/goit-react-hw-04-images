@@ -16,11 +16,11 @@ export function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [largeImageURL, setLargeImageURL] = useState('');
 
-  const handleSubmit = query => {
-    setSearchQuery(query);
-    setImages([]);
-    setPage(1);
-  };
+  // const handleSubmit = query => {
+  //   setSearchQuery(query);
+  //   setImages([]);
+  //   setPage(1);
+  // };
 
   useEffect(() => {
     if (page === 1) {
