@@ -27,6 +27,9 @@ export function Searchbar({ submit }) {
             value={value}
             placeholder="Search images..."
           />
+          <button type="submit" className={css.SearchFormButton}>
+            <span className={css.SearchFormButtonLabel}></span>
+          </button>
         </div>
       </form>
     </div>

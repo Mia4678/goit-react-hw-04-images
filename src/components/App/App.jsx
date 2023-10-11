@@ -4,7 +4,7 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import LoadMoreButton from '../Button/Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
-import { fetchImages } from '../API/ApiFetch';
+import { fetchImages } from '../../API/ApiFetch';
 import css from './App.module.css';
 
 export function App() {
@@ -22,31 +22,64 @@ export function App() {
   //   setPage(1);
   // };
 
+  // useEffect(() => {
+  //   if (page === 1) {
+  //     setImages(null);
+  //   }
+  //   fetchImages();
+  //   fetchPhotos();
+  // }, [page, searchQuery]);
+
+  // const fetchPhotos = async () => {
+  //   try {
+  //     setIsLoading(true);
+
+  //     const data = await fetchImages(searchQuery, page);
+
+  //     if (page === 1) {
+  //       setImages(data.hits);
+  //     } else {
+  //       setImages(prevImages => [...prevImages, ...data.hits]);
+  //     }
+  //   } catch (error) {
+  //     setError(error.response.data);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (page === 1) {
+  //     setImages(null);
+  //   }
+  // }, [page, searchQuery, fetchPhotos]);
+
   useEffect(() => {
+    const fetchPhotos = async () => {
+      if (!searchQuery) return;
+
+      setIsLoading(true);
+      try {
+        const data = await fetchImages(searchQuery, page);
+
+        if (page === 1) {
+          setImages(data.hits);
+        } else {
+          setImages(prevImages => [...prevImages, ...data.hits]);
+        }
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if (page === 1) {
       setImages(null);
     }
-    fetchImages();
+
     fetchPhotos();
   }, [page, searchQuery]);
-
-  const fetchPhotos = async () => {
-    try {
-      setIsLoading(true);
-
-      const data = await fetchImages(searchQuery, page);
-
-      if (page === 1) {
-        setImages(data.hits);
-      } else {
-        setImages(prevImages => [...prevImages, ...data.hits]);
-      }
-    } catch (error) {
-      setError(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleLoadMoreClick = () => {
     setPage(prevPage => prevPage + 1);
